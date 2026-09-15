@@ -1,6 +1,29 @@
 # bambi-sings
 
-Place unpacked WhatsApp chat exports under [`exports/`](exports/). A loader utility will consume that directory later; this document describes the export layout parsers should assume.
+Transcribes WhatsApp voice notes and writes the text back into the chat log, in place, next to each original message. See [`docs/plan.md`](docs/plan.md) for the design and [`docs/prompts.md`](docs/prompts.md) for the original ask.
+
+## Usage
+
+1. Drop exactly one WhatsApp export `.zip` (macOS-style filename, e.g. `WhatsApp Chat - {contact} (n).zip`) into [`exports/`](exports/).
+2. Run `./transcribe.sh` (wraps `docker compose --profile tools run --rm transcribe`). No local Python needed.
+3. Find `{original-name}_transcribed.zip` in `output/`.
+
+Useful flags (append to `./transcribe.sh`, e.g. `./transcribe.sh --dry-run`, or set the matching env var before running):
+
+| Flag | Env var | Default | Purpose |
+| --- | --- | --- | --- |
+| `--provider {local,openai}` | `TRANSCRIPTION_PROVIDER` | `local` | Transcription backend. `local` runs `faster-whisper` in-container, free and offline. `openai` calls OpenAI's hosted API — needs `OPENAI_API_KEY` and costs money per audio minute. |
+| `--model` | `WHISPER_MODEL` | `base` | `faster-whisper` model size (`tiny`…`large-v3`); only used with `--provider local`. |
+| `--device` | `WHISPER_DEVICE` | `cpu` | `faster-whisper` inference device (`cpu` or `cuda`). |
+| `--compute-type` | `WHISPER_COMPUTE` | `int8` | CTranslate2 compute type. |
+| `--openai-model` | `OPENAI_MODEL` | `gpt-4o-mini-transcribe` | Model used with `--provider openai`. |
+| — | `OPENAI_API_KEY` | unset | Required only for `--provider openai`; never commit this, keep it in a local `.env`. |
+| `--dry-run` | — | off | List detected voice notes without transcribing or writing output. |
+| `--limit N` | — | unset | Transcribe at most N voice notes (useful while iterating). |
+
+Defaulting to `local` keeps runs free and offline; opt into `openai` per-run when you want faster, higher-quality transcriptions and are fine with the API cost.
+
+Place unpacked WhatsApp chat exports under [`exports/`](exports/). This document describes the export layout the parser assumes.
 
 ## WhatsApp export anatomy
 

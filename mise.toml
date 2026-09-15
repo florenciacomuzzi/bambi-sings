@@ -1,0 +1,15 @@
+[tools]
+python = "3.12"
+uv = "latest"
+
+[tasks.lint]
+description = "Run flake8"
+run = "flake8 bambi_sings tests"
+
+[tasks.test]
+description = "Run unit tests with coverage gate"
+run = "pytest --cov=bambi_sings --cov-report=term-missing --cov-fail-under=85"
+
+[tasks.install]
+description = "Install package with dev dependencies"
+run = "pip install -e \".[dev]\""

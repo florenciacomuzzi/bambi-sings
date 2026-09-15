@@ -1,0 +1,36 @@
+services:
+  transcribe:
+    profiles: [tools]
+    build:
+      context: .
+      dockerfile: containers/transcribe/Dockerfile
+    volumes:
+      - ./exports:/exports:ro
+      - ./output:/output
+      - whisper-models:/root/.cache/huggingface
+    environment:
+      TRANSCRIPTION_PROVIDER: ${TRANSCRIPTION_PROVIDER:-local}
+      WHISPER_MODEL: ${WHISPER_MODEL:-base}
+      WHISPER_DEVICE: ${WHISPER_DEVICE:-cpu}
+      WHISPER_COMPUTE: ${WHISPER_COMPUTE:-int8}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-4o-mini-transcribe}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+    command:
+      - transcribe
+      - --exports-dir
+      - /exports
+      - --output-dir
+      - /output
+      - --provider
+      - ${TRANSCRIPTION_PROVIDER:-local}
+      - --model
+      - ${WHISPER_MODEL:-base}
+      - --device
+      - ${WHISPER_DEVICE:-cpu}
+      - --compute-type
+      - ${WHISPER_COMPUTE:-int8}
+      - --openai-model
+      - ${OPENAI_MODEL:-gpt-4o-mini-transcribe}
+
+volumes:
+  whisper-models:

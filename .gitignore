@@ -1,1 +1,10 @@
 exports/**
+output/**
+.venv/
+__pycache__/
+*.py[cod]
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+*.egg-info/

@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bambi-sings"
+version = "0.1.0"
+description = "Transcribe WhatsApp voice notes into exported chat logs"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "faster-whisper>=1.1.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "coverage[toml]>=7.6",
+    "flake8>=7.1",
+    "pytest>=8.3",
+    "pytest-cov>=6.0",
+]
+
+[project.scripts]
+bambi-sings = "bambi_sings.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["bambi_sings*"]
+
+[tool.coverage.run]
+branch = true
+source = ["bambi_sings"]
+omit = ["bambi_sings/__main__.py"]
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+exclude = [".git", "__pycache__", "build", "dist", ".venv"]

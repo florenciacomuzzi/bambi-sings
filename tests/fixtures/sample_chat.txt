@@ -1,0 +1,6 @@
+[1/2/24, 10:00:00 AM] Alice: Hello there
+[1/2/24, 10:01:00 AM] Bob: ‎<attached: 00000001-AUDIO-2024-01-02-10-01-00.opus>
+[1/2/24, 10:02:00 AM] Alice: ‎audio omitted
+[1/2/24, 10:03:00 AM] Bob: Caption here ‎<attached: 00000002-PHOTO-2024-01-02-10-03-00.jpg>
+[1/2/24, 10:04:00 AM] Alice: Multiline start
+continued body line
